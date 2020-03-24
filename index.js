@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
+const helmet = require('helmet');
 const usersRouter = require('./users/users-router.js');
 const authRouter = require('./auth/auth-router');
 const restricted = require('./auth/restricted-middleware.js');
@@ -18,6 +20,9 @@ const sessionConfig = {
 
 const server = express();
       server.use(express.json());
+      server.use(helmet());
+      server.use(cors());
+      server.use(session(sessionConfig));
       server.use('/api/users', restricted, usersRouter);
       server.use("/api/auth", authRouter);
 
